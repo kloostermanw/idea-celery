@@ -1,6 +1,6 @@
-package org.jetbrains.plugins.template.services
+package com.github.kloostermanw.ideacelery.services
 
-import org.jetbrains.plugins.template.MyBundle
+import com.github.kloostermanw.ideacelery.MyBundle
 
 class MyApplicationService {
 
