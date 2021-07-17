@@ -6,10 +6,19 @@
     <!-- Product and plugin compatibility requirements -->
     <!-- https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.lang</depends>
+    <depends>com.jetbrains.php</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <applicationService serviceImplementation="com.github.kloostermanw.ideacelery.services.MyApplicationService"/>
         <projectService serviceImplementation="com.github.kloostermanw.ideacelery.services.MyProjectService"/>
+
+        <completion.contributor
+                language="PHP"
+                order="first"
+                implementationClass="eu.kloosterman.ideacelery.completion.ToolboxCompletionContributor"
+        />
+
     </extensions>
 
     <applicationListeners>
