@@ -4,10 +4,9 @@ import com.intellij.codeInsight.completion.*;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.patterns.PlatformPatterns;
-import com.intellij.psi.PsiDirectory;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
+import com.intellij.psi.*;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiTreeUtil;
@@ -20,14 +19,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-/**
- * @author Daniel Espendiller <daniel@espendiller.net>
- */
-public class ToolboxCompletionContributor extends CompletionContributor {
+public class CeleryCompletionContributor extends CompletionContributor {
 
-    public ToolboxCompletionContributor() {
+    public CeleryCompletionContributor() {
 
         extend(
             CompletionType.BASIC,
@@ -63,18 +60,13 @@ public class ToolboxCompletionContributor extends CompletionContributor {
                         ClassReference cls = (ClassReference) method.getClassReference();
 
                         String strMethod = method.getName();
-                        String strClass = cls.getName();
-                        String strNamespace = cls.getNamespaceName();
+                        String strClass = cls != null ? cls.getName() : null;
 
                         if (!strMethod.equals("get")) {
                             return;
                         }
 
-                        if (!strClass.equals("Language")) {
-                            return;
-                        }
-
-                        if (!strNamespace.equals("\\App\\Base\\")) {
+                        if (!"Language".equals(strClass)) {
                             return;
                         }
 
@@ -104,7 +96,15 @@ public class ToolboxCompletionContributor extends CompletionContributor {
     }
 
     private List<String> getItemsOfCategories(Project project, String findCategory) {
-        PsiFile @NotNull [] arrPsiFiles = FilenameIndex.getFilesByName(project, "english-utf-8.php", GlobalSearchScope.allScope(project));
+        Collection<VirtualFile> virtualFiles = FilenameIndex.getVirtualFilesByName("english-utf-8.php", GlobalSearchScope.allScope(project));
+        PsiManager psiManager = PsiManager.getInstance(project);
+        List<PsiFile> arrPsiFiles = new ArrayList<>();
+        for (VirtualFile vf : virtualFiles) {
+            PsiFile pf = psiManager.findFile(vf);
+            if (pf != null) {
+                arrPsiFiles.add(pf);
+            }
+        }
 
         List<String> arrReturn = new ArrayList<>();
 
@@ -154,7 +154,15 @@ public class ToolboxCompletionContributor extends CompletionContributor {
     }
 
     private List<String> getCategoriesForLanguageFiles(Project project) {
-        PsiFile @NotNull [] arrPsiFiles = FilenameIndex.getFilesByName(project, "english-utf-8.php", GlobalSearchScope.allScope(project));
+        Collection<VirtualFile> virtualFiles = FilenameIndex.getVirtualFilesByName("english-utf-8.php", GlobalSearchScope.allScope(project));
+        PsiManager psiManager = PsiManager.getInstance(project);
+        List<PsiFile> arrPsiFiles = new ArrayList<>();
+        for (VirtualFile vf : virtualFiles) {
+            PsiFile pf = psiManager.findFile(vf);
+            if (pf != null) {
+                arrPsiFiles.add(pf);
+            }
+        }
 
         List<String> arrReturn = new ArrayList<>();
 

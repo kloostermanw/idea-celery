@@ -1,6 +1,6 @@
 <idea-plugin>
     <id>com.github.kloostermanw.ideacelery</id>
-    <name>idea-celery</name>
+    <name>intelli-celery-web-app</name>
     <vendor>kloostermanw</vendor>
 
     <!-- Product and plugin compatibility requirements -->
@@ -10,19 +10,24 @@
     <depends>com.jetbrains.php</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.github.kloostermanw.ideacelery.services.MyApplicationService"/>
-        <projectService serviceImplementation="com.github.kloostermanw.ideacelery.services.MyProjectService"/>
+        <applicationService serviceImplementation="com.github.kloostermanw.ideacelery.services.CeleryApplicationService"/>
+        <projectService serviceImplementation="com.github.kloostermanw.ideacelery.services.CeleryProjectService"/>
 
         <completion.contributor
                 language="PHP"
                 order="first"
-                implementationClass="eu.kloosterman.ideacelery.completion.ToolboxCompletionContributor"
+                implementationClass="eu.kloosterman.ideacelery.completion.CeleryCompletionContributor"
+        />
+
+        <psi.referenceContributor
+                language="PHP"
+                implementation="eu.kloosterman.ideacelery.reference.LanguageReferenceContributor"
         />
 
     </extensions>
 
     <applicationListeners>
-        <listener class="com.github.kloostermanw.ideacelery.listeners.MyProjectManagerListener"
+        <listener class="com.github.kloostermanw.ideacelery.listeners.CeleryProjectManagerListener"
                   topic="com.intellij.openapi.project.ProjectManagerListener"/>
     </applicationListeners>
 </idea-plugin>
