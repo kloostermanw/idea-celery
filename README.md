@@ -1,8 +1,8 @@
-# idea-celery
+# intelli-celery-web-app
 
-![Build](https://github.com/kloostermanw/idea-celery/workflows/Build/badge.svg)
-[![Version](https://img.shields.io/jetbrains/plugin/v/17262-idea-celery.svg)](https://plugins.jetbrains.com/plugin/17262-idea-celery)
-[![Downloads](https://img.shields.io/jetbrains/plugin/d/17262-idea-celery.svg)](https://plugins.jetbrains.com/plugin/17262-idea-celery)
+![Build](https://github.com/kloostermanw/intelli-celery-web-app/workflows/Build/badge.svg)
+[![Version](https://img.shields.io/jetbrains/plugin/v/17262-intelli-celery-web-app.svg)](https://plugins.jetbrains.com/plugin/17262-intelli-celery-web-app)
+[![Downloads](https://img.shields.io/jetbrains/plugin/d/17262-intelli-celery-web-app.svg)](https://plugins.jetbrains.com/plugin/17262-intelli-celery-web-app)
 
 ## Template ToDo list
 - [x] Create a new [IntelliJ Platform Plugin Template][template] project.
@@ -25,12 +25,12 @@ To keep everything working, do not remove `<!-- ... -->` sections.
 
 - Using IDE built-in plugin system:
   
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "idea-celery"</kbd> >
+  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "intelli-celery-web-app"</kbd> >
   <kbd>Install Plugin</kbd>
-  
+
 - Manually:
 
-  Download the [latest release](https://github.com/kloostermanw/idea-celery/releases/latest) and install it manually using
+  Download the [latest release](https://github.com/kloostermanw/intelli-celery-web-app/releases/latest) and install it manually using
   <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
 
 

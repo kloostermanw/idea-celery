@@ -1,1 +1,1 @@
-rootProject.name = "idea-celery"
+rootProject.name = "intelli-celery-web-app"

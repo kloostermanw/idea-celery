@@ -63,18 +63,13 @@ public class ToolboxCompletionContributor extends CompletionContributor {
                         ClassReference cls = (ClassReference) method.getClassReference();
 
                         String strMethod = method.getName();
-                        String strClass = cls.getName();
-                        String strNamespace = cls.getNamespaceName();
+                        String strClass = cls != null ? cls.getName() : null;
 
                         if (!strMethod.equals("get")) {
                             return;
                         }
 
-                        if (!strClass.equals("Language")) {
-                            return;
-                        }
-
-                        if (!strNamespace.equals("\\App\\Base\\")) {
+                        if (!"Language".equals(strClass)) {
                             return;
                         }
 

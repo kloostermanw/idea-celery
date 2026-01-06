@@ -1,6 +1,6 @@
 <idea-plugin>
     <id>com.github.kloostermanw.ideacelery</id>
-    <name>idea-celery</name>
+    <name>intelli-celery-web-app</name>
     <vendor>kloostermanw</vendor>
 
     <!-- Product and plugin compatibility requirements -->
@@ -17,6 +17,11 @@
                 language="PHP"
                 order="first"
                 implementationClass="eu.kloosterman.ideacelery.completion.ToolboxCompletionContributor"
+        />
+
+        <psi.referenceContributor
+                language="PHP"
+                implementation="eu.kloosterman.ideacelery.reference.LanguageReferenceContributor"
         />
 
     </extensions>
