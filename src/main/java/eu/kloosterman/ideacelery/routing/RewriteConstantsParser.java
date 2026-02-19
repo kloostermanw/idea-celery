@@ -205,9 +205,12 @@ public class RewriteConstantsParser {
     }
 
     /**
-     * Parses a static collection field (e.g. $SECTION_COLLECTION) from the PHP class.
+     * Parses a class constant collection (e.g. SECTION_COLLECTION) from the PHP class.
      * Extracts the ArrayCreationExpression default value and resolves each entry's
      * key (string) and value (string literal or self::CONSTANT reference).
+     * <p>
+     * Uses iteration over getOwnFields() filtered by isConstant() because
+     * findFieldByName() only finds properties, not class constants.
      */
     @NotNull
     private static Map<String, String> parseCollectionField(
@@ -217,7 +220,13 @@ public class RewriteConstantsParser {
     ) {
         Map<String, String> result = new HashMap<>();
 
-        Field field = phpClass.findFieldByName(fieldName, false);
+        Field field = null;
+        for (Field f : phpClass.getOwnFields()) {
+            if (f.isConstant() && fieldName.equals(f.getName())) {
+                field = f;
+                break;
+            }
+        }
         if (field == null) {
             return result;
         }
