@@ -12,6 +12,7 @@
     <extensions defaultExtensionNs="com.intellij">
         <applicationService serviceImplementation="com.github.kloostermanw.ideacelery.services.CeleryApplicationService"/>
         <projectService serviceImplementation="com.github.kloostermanw.ideacelery.services.CeleryProjectService"/>
+        <projectService serviceImplementation="eu.kloosterman.ideacelery.routing.RouteIndexService"/>
 
         <completion.contributor
                 language="PHP"
