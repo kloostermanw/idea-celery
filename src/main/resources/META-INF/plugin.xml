@@ -12,6 +12,7 @@
     <extensions defaultExtensionNs="com.intellij">
         <applicationService serviceImplementation="com.github.kloostermanw.ideacelery.services.CeleryApplicationService"/>
         <projectService serviceImplementation="com.github.kloostermanw.ideacelery.services.CeleryProjectService"/>
+        <projectService serviceImplementation="eu.kloosterman.ideacelery.routing.RouteIndexService"/>
 
         <completion.contributor
                 language="PHP"
@@ -25,6 +26,17 @@
         />
 
     </extensions>
+
+    <actions>
+        <group id="CeleryMainMenu" text="Celery" popup="true">
+            <add-to-group group-id="MainMenu" anchor="after" relative-to-action="CodeMenu"/>
+            <action id="Celery.RouteSearch"
+                    class="eu.kloosterman.ideacelery.actions.RouteSearchAction"
+                    text="Route Search..."
+                    description="Search routes by URL pattern or class name">
+            </action>
+        </group>
+    </actions>
 
     <applicationListeners>
         <listener class="com.github.kloostermanw.ideacelery.listeners.CeleryProjectManagerListener"

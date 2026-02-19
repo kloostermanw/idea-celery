@@ -1,40 +1,55 @@
-# intelli-celery-web-app
+# Celery PhpStorm Plugin
 
-![Build](https://github.com/kloostermanw/intelli-celery-web-app/workflows/Build/badge.svg)
-[![Version](https://img.shields.io/jetbrains/plugin/v/17262-intelli-celery-web-app.svg)](https://plugins.jetbrains.com/plugin/17262-intelli-celery-web-app)
-[![Downloads](https://img.shields.io/jetbrains/plugin/d/17262-intelli-celery-web-app.svg)](https://plugins.jetbrains.com/plugin/17262-intelli-celery-web-app)
-
-## Template ToDo list
-- [x] Create a new [IntelliJ Platform Plugin Template][template] project.
-- [ ] Verify the [pluginGroup](/gradle.properties), [plugin ID](/src/main/resources/META-INF/plugin.xml) and [sources package](/src/main/kotlin).
-- [ ] Review the [Legal Agreements](https://plugins.jetbrains.com/docs/marketplace/legal-agreements.html).
-- [ ] [Publish a plugin manually](https://plugins.jetbrains.com/docs/intellij/publishing-plugin.html?from=IJPluginTemplate) for the first time.
-- [ ] Set the Plugin ID in the above README badges.
-- [ ] Set the [Deployment Token](https://plugins.jetbrains.com/docs/marketplace/plugin-upload.html).
-- [ ] Click the <kbd>Watch</kbd> button on the top of the [IntelliJ Platform Plugin Template][template] to be notified about releases containing new features and fixes.
+A PhpStorm plugin that provides intelligent code completion, navigation, and route discovery for [Celery Payroll](https://www.celerypayroll.com/) PHP projects.
 
 <!-- Plugin description -->
-This Fancy IntelliJ Platform Plugin is going to be your implementation of the brilliant ideas that you have.
-
-This specific section is a source for the [plugin.xml](/src/main/resources/META-INF/plugin.xml) file which will be extracted by the [Gradle](/build.gradle.kts) during the build process.
-
-To keep everything working, do not remove `<!-- ... -->` sections. 
+PhpStorm plugin for Celery Payroll PHP development. Provides autocomplete for `Language::get()` calls, go-to-definition for language keys, and route search powered by automatic RewriteConstants and View class indexing.
 <!-- Plugin description end -->
 
 ## Installation
 
-- Using IDE built-in plugin system:
-  
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "intelli-celery-web-app"</kbd> >
-  <kbd>Install Plugin</kbd>
+1. Download the latest `.zip` file from the [GitHub Releases](https://github.com/kloostermanw/idea-celery/releases/latest) page
+2. Open PhpStorm
+3. Go to <kbd>Settings</kbd> > <kbd>Plugins</kbd>
+4. Click the <kbd>gear icon</kbd> and select <kbd>Install Plugin from Disk...</kbd>
+5. Select the downloaded `.zip` file
+6. Restart PhpStorm when prompted
 
-- Manually:
+## Features
 
-  Download the [latest release](https://github.com/kloostermanw/intelli-celery-web-app/releases/latest) and install it manually using
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
+### Language Autocomplete
 
+Provides intelligent code completion for `Language::get($item, $category)` calls by parsing the `english-utf-8.php` language files in your project.
 
----
-Plugin based on the [IntelliJ Platform Plugin Template][template].
+- **Category completion** (second parameter) — suggests all available category names
+- **Item key completion** (first parameter) — suggests item keys within the selected category
 
-[template]: https://github.com/JetBrains/intellij-platform-plugin-template
+### Language Navigation
+
+<kbd>Ctrl+Click</kbd> (or <kbd>Cmd+Click</kbd> on Mac) on `Language::get()` parameters to jump directly to their definitions in `english-utf-8.php`.
+
+- Clicking a category name navigates to that category's array key
+- Clicking an item key navigates to the specific item within its category
+
+### Route Search
+
+Access via <kbd>Celery</kbd> > <kbd>Route Search...</kbd> in the menu bar.
+
+Opens an interactive search popup to discover and navigate to application routes. Search by:
+
+- URL pattern
+- Class name
+- Method name
+- Section, subsection, or command slug
+
+Select a route to jump directly to the corresponding action method in your View class.
+
+### Automatic Route Indexing
+
+The plugin automatically discovers and indexes routes by combining:
+
+- **RewriteConstants** parsing — extracts section, subsection, command, and parse type URL slug mappings
+- **View class scanning** — discovers classes in `/Views/` directories, their section/subsection assignments, and action methods
+- **Constant resolution** — resolves constant references to their values
+
+The index is cached and automatically rebuilt when relevant PHP files change.
