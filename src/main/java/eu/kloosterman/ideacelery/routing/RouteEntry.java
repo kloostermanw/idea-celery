@@ -100,28 +100,67 @@ public class RouteEntry {
     /**
      * Returns true if the query matches any of: url, className, methodName,
      * sectionSlug, subsectionSlug, or commandSlug (case-insensitive contains check).
+     * <p>
+     * If the query looks like a full URL (contains "://"), the domain and any
+     * leading numeric department/session segment are stripped before matching.
      */
     public boolean matches(@NotNull String query) {
-        String lowerQuery = query.toLowerCase();
-        if (url.toLowerCase().contains(lowerQuery)) {
+        String normalizedQuery = normalizeQuery(query).toLowerCase();
+        if (url.toLowerCase().contains(normalizedQuery)) {
             return true;
         }
-        if (className.toLowerCase().contains(lowerQuery)) {
+        if (className.toLowerCase().contains(normalizedQuery)) {
             return true;
         }
-        if (methodName.toLowerCase().contains(lowerQuery)) {
+        if (methodName.toLowerCase().contains(normalizedQuery)) {
             return true;
         }
-        if (sectionSlug.toLowerCase().contains(lowerQuery)) {
+        if (sectionSlug.toLowerCase().contains(normalizedQuery)) {
             return true;
         }
-        if (subsectionSlug != null && subsectionSlug.toLowerCase().contains(lowerQuery)) {
+        if (subsectionSlug != null && subsectionSlug.toLowerCase().contains(normalizedQuery)) {
             return true;
         }
-        if (commandSlug != null && commandSlug.toLowerCase().contains(lowerQuery)) {
+        if (commandSlug != null && commandSlug.toLowerCase().contains(normalizedQuery)) {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Normalizes a search query by stripping protocol/domain from full URLs
+     * and removing leading numeric path segments (department/session IDs).
+     * <p>
+     * For example: "https://pg.celery.loc/35346486.91069296/dashboard/list"
+     * becomes "/dashboard/list".
+     */
+    @NotNull
+    private static String normalizeQuery(@NotNull String query) {
+        String normalized = query.trim();
+
+        // Strip protocol and domain
+        if (normalized.contains("://")) {
+            int pathStart = normalized.indexOf('/', normalized.indexOf("://") + 3);
+            if (pathStart >= 0) {
+                normalized = normalized.substring(pathStart);
+            } else {
+                return normalized;
+            }
+        }
+
+        // Strip leading segment that looks like a numeric ID (e.g. /35346486.91069296/)
+        if (normalized.startsWith("/")) {
+            String withoutLeading = normalized.substring(1);
+            int nextSlash = withoutLeading.indexOf('/');
+            if (nextSlash > 0) {
+                String firstSegment = withoutLeading.substring(0, nextSlash);
+                if (firstSegment.matches("[0-9]+(\\.[0-9]+)*")) {
+                    normalized = withoutLeading.substring(nextSlash);
+                }
+            }
+        }
+
+        return normalized;
     }
 
     /**
