@@ -1,12 +1,7 @@
 package eu.kloosterman.ideacelery.routing;
 
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFileEvent;
-import com.intellij.openapi.vfs.VirtualFileListener;
 import com.intellij.openapi.vfs.VirtualFileManager;
-import com.intellij.openapi.vfs.VirtualFileMoveEvent;
-import com.intellij.openapi.vfs.VirtualFilePropertyEvent;
-import com.intellij.openapi.vfs.VirtualFileCopyEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -32,49 +27,18 @@ public class RouteIndexService {
         this.project = project;
         this.cachedRoutes = null;
 
-        VirtualFileManager.getInstance().addVirtualFileListener(new VirtualFileListener() {
-            @Override
-            public void contentsChanged(@NotNull VirtualFileEvent event) {
-                if (isRelevantFile(event.getFile().getPath())) {
-                    invalidateCache();
+        project.getMessageBus().connect().subscribe(VirtualFileManager.VFS_CHANGES,
+            new com.intellij.openapi.vfs.newvfs.BulkFileListener() {
+                @Override
+                public void after(@NotNull List<? extends com.intellij.openapi.vfs.newvfs.events.VFileEvent> events) {
+                    for (com.intellij.openapi.vfs.newvfs.events.VFileEvent event : events) {
+                        if (event.getFile() != null && isRelevantFile(event.getFile().getPath())) {
+                            invalidateCache();
+                            break;
+                        }
+                    }
                 }
-            }
-
-            @Override
-            public void fileCreated(@NotNull VirtualFileEvent event) {
-                if (isRelevantFile(event.getFile().getPath())) {
-                    invalidateCache();
-                }
-            }
-
-            @Override
-            public void fileDeleted(@NotNull VirtualFileEvent event) {
-                if (isRelevantFile(event.getFile().getPath())) {
-                    invalidateCache();
-                }
-            }
-
-            @Override
-            public void fileMoved(@NotNull VirtualFileMoveEvent event) {
-                if (isRelevantFile(event.getFile().getPath())) {
-                    invalidateCache();
-                }
-            }
-
-            @Override
-            public void fileCopied(@NotNull VirtualFileCopyEvent event) {
-                if (isRelevantFile(event.getFile().getPath())) {
-                    invalidateCache();
-                }
-            }
-
-            @Override
-            public void propertyChanged(@NotNull VirtualFilePropertyEvent event) {
-                if (isRelevantFile(event.getFile().getPath())) {
-                    invalidateCache();
-                }
-            }
-        }, project);
+            });
     }
 
     /**
