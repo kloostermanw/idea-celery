@@ -1,7 +1,7 @@
 [DEFAULT]
 verbose = false
 source = develop
-target = master
+target = main
 
 # cmd1 that runs after the release is created
 # cmd1 = none | vendor/bin/readmegen
